@@ -19,9 +19,6 @@
       
     </head>
     <body>
-        <div class="font-sans text-gray-900 antialiased">
-            {{ $slot }}
-        </div>
-        @livewireScripts
+        <a class="btn btn-success" href="{{ route('clientes.create') }}"> Crear nuevo cliente</a>
     </body>
 </html>

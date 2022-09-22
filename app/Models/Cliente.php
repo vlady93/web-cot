@@ -15,4 +15,5 @@ class Cliente extends Model
         'ci'
         
     ];
+    
 }

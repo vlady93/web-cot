@@ -1,51 +1,60 @@
-@extends('cliente.layout')
- 
+@extends('layouts.admin')
+@section('title', 'Gestión de clientes')
+@section('styles')
+    <link href={{ asset('otika/assets/bundles/datatables/datatables.min.css') }} rel="stylesheet">
+    <link
+        href={{ asset('otika/assets/bundles/datatables/DataTables-1.10.16/css/dataTables.bootstrap4.min.css') }}rel="stylesheet">
 @section('content')
-    <div class="row" style="margin-top: 5rem;">
-        <div class="col-lg-12 margin-tb">
-            <div class="pull-left">
-                <h2>Listado de Clientes</h2>
-            </div>
-            <div class="pull-right">
-                <a class="btn btn-success" href="{{ route('clientes.create') }}"> Crear nuevo cliente</a>
+
+    <div class="section-body">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3 mr-2">
+                            <h4>Lista de Clientes</h4>
+                            <a class="nav-link" href="{{ route('clientes.create') }}">
+                                <span class="btn btn-success btn-sm "> Nuevo Cliente</span>
+                            </a>
+                        </div>
+                        <div class="table-responsive">
+                            <div id="table-1_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <table class="table table-striped dataTable no-footer" id="table-1" role="grid"
+                                            aria-describedby="table-1_info">
+                                            <thead>
+                                                <tr>
+                                                    <th class="sorting_asc">Nombre</th>
+                                                    <th class="sorting_asc">Apellido Paterno</th>
+                                                    <th class="sorting_asc">Apellido Materno</th>
+                                                    <th class="sorting_asc">Cedula de Identidad</ths>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($datas as $data)
+                                                    <tr>
+                                                        <td>{{ $data->nombre }}</td>
+                                                        <td>{{ $data->ap_paterno }}</td>
+                                                        <td>{{ $data->ap_materno }}</td>
+                                                        <td>{{ $data->ci }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-   
-    @if ($message = Session::get('success'))
-        <div class="alert alert-success">
-            <p>{{ $message }}</p>
-        </div>
-    @endif
-   
-    <table class="table table-bordered">
-        <tr>
-            
-            <th>Nombre</th>
-            <th>Apellido Paterno</th>
-            <th>Apellido Materno</th>
-            <th>Cedula de Identidad</th>
-            <th width="280px">Acción</th>
-        </tr>
-        @foreach ($data as $key => $value)
-        <tr>
-           
-            <td>{{ $value->nombre }}</td>
-            <td>{{ $value->ap_paterno }}</td>
-            <td>{{ $value->ap_materno }}</td>
-            <td>{{ $value->ci }}</td>
-            
-            <td>
-                <form action="{{ route('clientes.destroy',$value->id) }}" method="POST">   
-                    <a class="btn btn-info" href="{{ route('clientes.show',$value->id) }}">Ver</a>    
-                    <a class="btn btn-primary" href="{{ route('clientes.edit',$value->id) }}">Editar</a>   
-                    @csrf
-                    @method('DELETE')      
-                    <button type="submit" class="btn btn-danger">Eliminar</button>
-                </form>
-            </td>
-        </tr>
-        @endforeach
-    </table>  
-    {!! $data->links() !!}      
-@endsection
+    @endsection
+    @section('scripts')
+
+        <script src={{ asset('otika/assets/bundles/datatables/datatables.min.js') }}></script>
+        <script src={{ asset('otika/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js') }}></script>
+        <!-- Page Specific JS File -->
+        <script src={{ asset('otika/assets/js/page/datatables.js') }}></script>
+    @endsection

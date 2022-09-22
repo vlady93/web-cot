@@ -14,10 +14,10 @@ class ClienteController extends Controller
      */
     public function index()
     {
-         $data = Cliente::latest()->paginate(5);
+         $datas = Cliente::select('nombre','ap_paterno','ap_materno','ci')->get();;
     
-        return view('cliente.index',compact('data'))
-        ->with('i', (request()->input('page', 1) - 1) * 5);
+        return view('cliente.index',compact('datas'));
+        
     }
 
     /**
@@ -70,7 +70,7 @@ class ClienteController extends Controller
      */
     public function edit(Cliente $cliente)
     {
-        return view('cliente.edit',compact('cliente'));
+        return view('cliente.editar',compact('cliente'));
     }
 
     /**
