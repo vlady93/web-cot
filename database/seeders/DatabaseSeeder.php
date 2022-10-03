@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\elementos;
+use App\Models\Tipo;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -69,6 +70,14 @@ class DatabaseSeeder extends Seeder
         $elemento7->nombre="Humedad";
         $elemento7->simbolo="H2O";
         $elemento7->save();
+
+        $tipo1 =new Tipo();
+        $tipo1->nombre="Plomo/Plata";
+        $tipo1->save();
+
+        $tipo2 =new Tipo();
+        $tipo2->nombre="Zinc/Plata";
+        $tipo2->save();
 
     }
 }

@@ -8,7 +8,7 @@
             <div class="card card-secondary">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center mb-3 mr-2">
-                        <h4>Registro de liquidación</h4>
+                        <h4>Registro de Penalidades</h4>
                     
                     </div>
 
@@ -28,11 +28,11 @@
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
-                            <label for="termino_id"class="font-weight-bold">Cliente</label>
+                            <label for="termino_id"class="font-weight-bold">Termino</label>
                             <select class="form-control" name="termino_id" id="termino_id" required>
                                 <option value="" disabled selected>Seleccione un Termino</option>
                                 @foreach ($terminos as $termino)
-                                    <option value="{{ $termino->id }}">{{ $termino->id}} 
+                                    <option value="{{ $termino->id }}">{{$termino->nombre}}-{{ $termino->tipo->nombre}}
                                         
                                         </option>
                                 @endforeach
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                     
-                    <div class="col-xs-6 col-sm-6 col-md-6">
+                    <div class="col-xs-4 col-sm-4 col-md-4">
                         <div class="form-group">
                             <strong>Elementos</strong>
                             <select class="form-control" name="elemento_id" id="elemento_id">
@@ -67,35 +67,30 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3">
-                        <div class="form-group">
-                            <strong>Elemento:</strong>
-                            <input type="number" name="elemento" id="elemento" step="0.01" class="form-control">
-                        </div>
-                    </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3">
+                    
+                    <div class="col-xs-2 col-sm-2 col-md-2">
                         <div class="form-group">
                             <strong>Libre:</strong>
                             <input type="number" name="libre" id="libre" step="0.01" class="form-control">
                         </div>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3">
+                    <div class="col-xs-2 col-sm-2 col-md-2">
                         <div class="form-group">
                             <strong>Costo:</strong>
                             <input type="number" name="costo" id="costo" step="0.01" class="form-control">
                         </div>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3">
+                    <div class="col-xs-2 col-sm-2 col-md-2">
                         <div class="form-group">
                             <strong>Fracción:</strong>
                             <input type="number" name="fraccion" id="fraccion" step="0.01" class="form-control">
                         </div>
                     </div>
-                    <div class="col-xs-3 col-sm-3 col-md-3">
+                    <div class="col-xs-2 col-sm-23 col-md-2">
                         <div class="form-group">
                             <strong> </strong>
                             <br>
-                            <button type="button" id="agregar" class="btn btn-primary">Agregar Elemento</button>
+                            <button type="button" id="agregar" class="btn btn-success">Agregar Elemento</button>
                         </div>
                     </div>
                     <div class="col-xs-12 col-sm-12 col-md-12">
@@ -107,7 +102,9 @@
                                         <tr>
                                             <th>Eliminar</th>
                                             <th>Elemento añadido</th>
-                                            <th>Valor</th>
+                                            <th>Libre</th>
+                                            <th>Costo</th>
+                                            <th>Fracción</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -214,7 +211,6 @@
             const cart = `<td><button type="button" data-elemento=${elemento_id}
                  class="delete btn btn-danger btn-sm" ><i class="fa fa-times fa-2x"></i></button></td>
                 <td class="valor"><input type="hidden" id="elemento" name="elemento_id[]" class="elemen" value=${elemento_id}>${elemento}</td>
-                <td> <input type="hidden" name="elemento[]" value=${elemento_id}>${libre} </td>
                 <td> <input type="hidden" name="libre[]" value=${libre}>${libre} </td>
                 <td> <input type="hidden" name="costo[]" value=${costo}>${costo} </td>
                 <td> <input type="hidden" name="fraccion[]" value=${fraccion}>${fraccion} </td>`;

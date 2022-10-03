@@ -18,6 +18,8 @@ class liquidacion extends Model
         'smc_pb',
         'tmh',
         'humedad',
+        'glosario',
+        'valoradicional'
     ];
     public function LeyesDetalle(){
         return $this->hasMany(leyes::class);

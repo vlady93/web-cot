@@ -36,8 +36,6 @@
                                             <tbody>
                                                 @foreach ($terminos as $termino)
                                                 <tr>
-                                                    <td>{{ $termino->cliente->nombre }} {{ $termino->cliente->ap_paterno }} {{ $termino->cliente->ap_materno }}</td>
-                                                    <td>{{ $termino->tipo->nombre}}</td>
                                                     <td></td>
                                                     <td></td>
                                                     

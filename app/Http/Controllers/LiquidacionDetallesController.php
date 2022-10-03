@@ -46,7 +46,7 @@ class LiquidacionDetallesController extends Controller
         $input = $request->all();
         $proyecto = LiquidacionDetalles::create($input);
         foreach ($request->elemento_id as $key => $valor) {
-            $results[] = array("elemento" => $request->elemento[$key],
+            $results[] = array(
             "libre" => $request->libre[$key],
             "costo" => $request->costo[$key],
             "fraccion" => $request->fraccion[$key],

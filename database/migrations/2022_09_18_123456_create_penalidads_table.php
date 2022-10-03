@@ -19,7 +19,6 @@ class CreatePenalidadsTable extends Migration
             $table->foreign('liquidacion_detalles_id')->references('id')->on('liquidacion_detalles');
             $table->unsignedBigInteger('elemento_id');
             $table->foreign('elemento_id')->references('id')->on('elementos');
-            $table->decimal('elemento');
             $table->decimal('libre');
             $table->decimal('costo');
             $table->decimal('fraccion');

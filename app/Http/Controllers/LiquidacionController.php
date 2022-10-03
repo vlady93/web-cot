@@ -12,6 +12,7 @@ use App\Models\Termino;
 use App\Services\PdfBuilderService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class LiquidacionController extends Controller
 {
@@ -68,7 +69,7 @@ class LiquidacionController extends Controller
             }
         }
         $results[] = ['elemento_id' => $assb['id'],'valor'=> $suma];
-        $proyecto->LeyesDetalles()->createMany($results);
+        $proyecto->LeyesDetalle()->createMany($results);
 
         return redirect()->route('liquidaciones.index');
     }
@@ -220,33 +221,60 @@ class LiquidacionController extends Controller
     public function pruebapdf(liquidacion $liquidacion,PdfBuilderService $pdfBuilderService)
     {   
         $clientes=LiquidacionDetalles::where('id',$liquidacion->id)->first();
-        $leyes=leyes::join('liquidacions','liquidacions.id','leyes.liquidacion_id')->where('liquidacions.liquidacion_detalles_id','6')->get();
-        $penalidades=Penalidad::join('liquidacion_detalles','liquidacion_detalles.id','penalidads.liquidacion_detalles_id')
-        ->join('elementos','elementos.id','penalidads.elemento_id')
-        ->where('liquidacion_detalles.id',$liquidacion->liquidacion_detalles_id)->get();
+        $leyes=leyes::join('liquidacions','liquidacions.id','leyes.liquidacion_id')
+               ->where('liquidacions.liquidacion_detalles_id',$liquidacion->liquidacion_detalles_id)->get();
         $termino=Termino::join('liquidacion_detalles','liquidacion_detalles.termino_id','terminos.id')
         ->where('liquidacion_detalles.id',$liquidacion->liquidacion_detalles_id)->first();
-        
         $liquidacione=liquidacion::where('liquidacion_detalles_id',$liquidacion->liquidacion_detalles_id)->first();
-        $pagable=0;
+        $valorag = leyes::join('elementos', "elementos.id", "=", "leyes.elemento_id")
+            ->where('liquidacion_id', $liquidacion->id)
+            ->where('elementos.nombre', 'Plata')
+            ->select('leyes.valor')
+            ->first();
         $valorzn=leyes::join('elementos',"elementos.id","=","leyes.elemento_id")
-        ->where('liquidacion_id',$liquidacion->id)
-        ->where('elementos.nombre','Plomo')
-        ->select('leyes.valor')
-        ->first();
-        $vfinalpb=(($valorzn->valor)-3);
-        
-        $znpagable=$vfinalpb*0.95;
-       
-        if($vfinalpb>$znpagable){
-            $pagable=$znpagable;
-        }else{
-            $pagable=$vfinalpb;
-        }
-        $vfinalag=$pdfBuilderService->elemento($liquidacion);
-        $resultados=$pdfBuilderService->calculoPenalidades($liquidacion);
-        $pdf = Pdf::loadView('liquidacion.pruebapdf',compact('leyes','clientes','penalidades','pagable','vfinalag','liquidacione','resultados','termino'));
+            ->where('liquidacion_id',$liquidacion->id)
+            ->where('elementos.nombre','Zinc')
+            ->select('leyes.valor as val')
+            ->first();
+        $comibol=$pdfBuilderService->calcularEmpresa($termino->comibol);
+        $fedecomin=$pdfBuilderService->calcularEmpresa($termino->fedecomin);
+        $fencomin=$pdfBuilderService->calcularEmpresa($termino->fencomin);
+        $pagable=$pdfBuilderService->calcularZinc($liquidacion);
+        $vfinalag=$pdfBuilderService->calcularAg($liquidacion);
+        $resultados=$pdfBuilderService->calculoPenalidadesZn($liquidacion);
+      
+        $pdf = Pdf::loadView('liquidacion.pruebapdf',compact('leyes','clientes','pagable','vfinalag','liquidacione','resultados','termino','valorag','valorzn','comibol','fedecomin','fencomin'));
 
         return $pdf->stream('Reporte_de_compraf');
     }
+    public function pruebapdf1(liquidacion $liquidacion,PdfBuilderService $pdfBuilderService)
+    {   
+        $clientes=LiquidacionDetalles::where('id',$liquidacion->id)->first();
+        $leyes=leyes::join('liquidacions','liquidacions.id','leyes.liquidacion_id')
+               ->where('liquidacions.liquidacion_detalles_id',$liquidacion->liquidacion_detalles_id)->get();
+        $termino=Termino::join('liquidacion_detalles','liquidacion_detalles.termino_id','terminos.id')
+        ->where('liquidacion_detalles.id',$liquidacion->liquidacion_detalles_id)->first();
+        $liquidacione=liquidacion::where('liquidacion_detalles_id',$liquidacion->liquidacion_detalles_id)->first();
+        $valorag = leyes::join('elementos', "elementos.id", "=", "leyes.elemento_id")
+            ->where('liquidacion_id', $liquidacion->id)
+            ->where('elementos.nombre', 'Plata')
+            ->select('leyes.valor')
+            ->first();
+        $valorzn=leyes::join('elementos',"elementos.id","=","leyes.elemento_id")
+            ->where('liquidacion_id',$liquidacion->id)
+            ->where('elementos.nombre','Plomo')
+            ->select('leyes.valor as val')
+            ->first();
+        $comibol=$pdfBuilderService->calcularEmpresa($termino->comibol);
+        $fedecomin=$pdfBuilderService->calcularEmpresa($termino->fedecomin);
+        $fencomin=$pdfBuilderService->calcularEmpresa($termino->fencomin);
+        $pagable=$pdfBuilderService->calcularPlomo($liquidacion);
+        $vfinalag=$pdfBuilderService->calcularAg($liquidacion);
+        $resultados=$pdfBuilderService->calculoPenalidadesZn($liquidacion);
+      
+        $pdf = Pdf::loadView('liquidacion.pdfpb',compact('leyes','clientes','pagable','vfinalag','liquidacione','resultados','termino','valorag','valorzn','comibol','fedecomin','fencomin'));
+
+        return $pdf->stream('Reporte_de_compraf');
+    }
+
 }

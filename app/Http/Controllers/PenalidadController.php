@@ -38,7 +38,7 @@ class PenalidadController extends Controller
         
     $results=[];
     foreach ($request->liquidacion_id as $key => $id_liqui) {
-            $results[] = array( "elemento" => $request->elemento[$key],
+            $results[] = array( 
             "libre" => $request->libre[$key],
             "costo" => $request->costo[$key],
             "fraccion" => $request->fraccion[$key],

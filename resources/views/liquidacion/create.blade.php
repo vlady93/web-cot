@@ -9,31 +9,18 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3 mr-2">
                             <h4>Registro de liquidación</h4>
-
                         </div>
-
-                        @if ($errors->any())
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
-
                         <form action="{{ route('liquidador.store') }}" method="POST">
                             @csrf
                             <div class="row">
                                 <div class="col-xs-6 col-sm-6 col-md-6">
                                     <div class="form-group">
-                                        <strong>Elementos</strong>
+                                        <strong>Liquidaciones</strong>
                                         <select class="form-control" name="liquidacion_detalles_id" id="liquidacion_detalles_id">
-                                            <option value="" disabled selected>Seleccione Elemento</option>
+                                            <option value="" disabled selected>Seleccione Liquidación</option>
                                             @foreach ($liquidaciones as $liquidacion)
                                                 <option data-target="{{ $liquidacion->id }}" value="{{ $liquidacion->id }}">
-                                                    {{ $liquidacion->id }} </option>
+                                                   Liquidación de {{ $liquidacion->cliente->nombre }} {{ $liquidacion->cliente->ap_paterno }} {{ $liquidacion->termino->tipo->nombre}} </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -41,7 +28,7 @@
 
                                 <div class="col-xs-6 col-sm-6 col-md-6">
                                     <div class="form-group">
-                                        <label for="lote"class="font-weight-bold">Nombre Lote:</label>
+                                        <strong>Nombre Lote:</strong>
                                         <input type="text" name="lote" class="form-control">
                                     </div>
                                 </div>
@@ -49,7 +36,7 @@
 
                                 <div class="col-xs-3 col-sm-3 col-md-3">
                                     <div class="form-group">
-                                        <strong>Cotización Nacional Zn:</strong>
+                                        <strong>Cotización Nacional Zn/Pb:</strong>
                                         <input type="number" name="cot_ag" step="0.01" class="form-control">
                                     </div>
                                 </div>
@@ -61,7 +48,7 @@
                                 </div>
                                 <div class="col-xs-3 col-sm-3 col-md-3">
                                     <div class="form-group">
-                                        <strong>Cotización Oficial Zn:</strong>
+                                        <strong>Cotización Oficial Zn/Pb:</strong>
                                         <input type="number" name="smc_pb" step="0.01" class="form-control">
                                     </div>
                                 </div>
@@ -72,16 +59,37 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>TMH:</strong>
                                         <input type="number" name="tmh" step="0.01" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6">
+                                <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>H<small>2</small>O:</strong>
                                         <input type="number" name="humedad" step="0.01" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group col-3 col-md-3 col-lg-3" >
+                                    <br>
+                                    <div class="form-check">
+                                        <input class="form-check-input miOpcion" type="checkbox" id="defaultCheck3" onclick="formAdicional()">
+                                        <label class="form-check-label" for="defaultCheck3">
+                                            <strong>Añadir otros Gastos:</strong>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4" id="glosario">
+                                    <div class="form-group">
+                                        <strong>Glosario:</strong>
+                                        <input type="text" name="glosario "class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xs-4 col-sm-4 col-md-4" id="valoradicional">
+                                    <div class="form-group">
+                                        <strong>Monto adicional:</strong>
+                                        <input type="number" name="valoradicional" step="0.01" class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-md-6">
@@ -136,6 +144,7 @@
                                 <div class="col-xs-12 col-sm-12 col-md-12 text-center">
                                     <button type="submit" id="guardar"class="btn btn-primary">Registrar</button>
                                 </div>
+                                
                             </div>
 
 
@@ -229,7 +238,34 @@
                     }
                 </script>
 
+<script>
+    $("#refinacion").hide();
+function destino() {
+ var url = document.getElementById('tipo_id').value
 
-
-
+ if (url != "2") {
+   $("#refinacion").show();
+ }else{
+   $("#refinacion").hide();
+ }
+}
+</script>
+<script>
+   $("#valoradicional").hide();
+   $("#glosario").hide();
+    function formAdicional() {
+  var elementos = $('input.miOpcion');
+  var algunoMarcado = elementos.toArray().find(function(elemento) {
+     return $(elemento).prop('checked');
+  });
+  
+  if(algunoMarcado) {
+    $('#glosario').show();
+    $('#valoradicional').show();
+  } else {
+    $('#valoradicional').hide();
+    $('#glosario').hide();
+  }
+}
+</script>
             @endsection

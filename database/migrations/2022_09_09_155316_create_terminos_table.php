@@ -18,18 +18,20 @@ class CreateTerminosTable extends Migration
             
             $table->unsignedBigInteger('tipo_id');
             $table->foreign('tipo_id')->references('id')->on('tipos');
+            $table->String('nombre');
             $table->decimal('merma');
             $table->decimal('valorag');
             $table->decimal('porcentag');
             $table->decimal('maquila');
             $table->decimal('base');
-            $table->decimal('refincaion');
+            $table->decimal('refincaion')->nullable();
             $table->decimal('escalador');
             $table->decimal('flete');
             $table->decimal('rollback');
-            $table->decimal('comibol');
-            $table->decimal('fedecomin');
-            $table->decimal('fencomin');
+            $table->decimal('minimoag');
+            $table->decimal('comibol')->nullable();
+            $table->decimal('fedecomin')->nullable();
+            $table->decimal('fencomin')->nullable();
             $table->decimal('remesa');
             
             $table->timestamps();

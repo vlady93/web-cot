@@ -35,12 +35,13 @@
                                                 <tr>
                                                     <td>{{ $liquidacion->id }} {{ $liquidacion->id}}</td>
                                                     <td>{{$liquidacion}}</td>
+                                                    <td>{{$liquidacion->termino->tipo_id}}</td>
     
-                                                   
+                                                   @if ($liquidacion->termino->tipo_id!='1')
                                                    <td><a class="badge badge-danger" href={{route('liquidacion.pruebapdf',$liquidacion)}}>pdf</a></td>
-                                                  
-                                                   
-                                                
+                                                   @else
+                                                   <td><a class="badge badge-info" href={{route('liquidacion.pruebapdf1',$liquidacion)}}>pdf</a></td>
+                                                   @endif
                                                 </tr>
                                                 @endforeach
                                             </tbody>

@@ -12,7 +12,6 @@ class Penalidad extends Model
         
         'liquidacion_id',
         'elemento_id',
-        'elemento',
         'libre',
         'costo',
         'fraccion',

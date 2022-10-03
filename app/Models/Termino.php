@@ -11,8 +11,10 @@ class Termino extends Model
 
     protected $fillable = [
         'tipo_id',
+        'nombre',
         'merma',
         'valorag',
+        'minimoag',
         'porcentag',
         'maquila',
         'base',

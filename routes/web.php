@@ -40,6 +40,7 @@ Route::middleware([
     Route::get('liquidador/pdf/{liquidacion}', [LiquidacionController::class,'pdf'])->name('liquidacion.pdf');
     Route::get('liquidaciones/pdfpb/{liquidacion}', [LiquidacionController::class,'pdfpb'])->name('liquidacion.pdfpb');
     Route::get('liquidaciones/pruebapdf/{liquidacion}', [LiquidacionController::class,'pruebapdf'])->name('liquidacion.pruebapdf');
+    Route::get('liquidaciones/pruebapdf1/{liquidacion}', [LiquidacionController::class,'pruebapdf1'])->name('liquidacion.pruebapdf1');
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
