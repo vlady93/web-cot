@@ -19,6 +19,7 @@ class CreateLiquidacionDetallesTable extends Migration
             $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->unsignedBigInteger('termino_id');
             $table->foreign('termino_id')->references('id')->on('terminos');
+            $table->enum('estado',['INICIAL','PROVISIONAL','FINAL'])->default('INICIAL');
             $table->timestamps();
         });
     }

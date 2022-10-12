@@ -20,7 +20,7 @@ class CreateTerminosTable extends Migration
             $table->foreign('tipo_id')->references('id')->on('tipos');
             $table->String('nombre');
             $table->decimal('merma');
-            $table->decimal('valorag');
+            $table->decimal('valorag',12,8);
             $table->decimal('porcentag');
             $table->decimal('maquila');
             $table->decimal('base');
@@ -29,10 +29,12 @@ class CreateTerminosTable extends Migration
             $table->decimal('flete');
             $table->decimal('rollback');
             $table->decimal('minimoag');
-            $table->decimal('comibol')->nullable();
-            $table->decimal('fedecomin')->nullable();
-            $table->decimal('fencomin')->nullable();
-            $table->decimal('remesa');
+            $table->decimal('comibol',8,4)->nullable();
+            $table->decimal('fedecomin',8,4)->nullable();
+            $table->decimal('fencomin',8,4)->nullable();
+            $table->decimal('caja',8,4);
+            $table->decimal('pagable');
+            $table->decimal('remesa',8,4);
             
             $table->timestamps();
             

@@ -18,7 +18,7 @@
 
         th {
             border: 1px solid #dddddd;
-            text-align: center;
+            text-align: left;
             font-size: 11px;
             padding: 4px;
         }
@@ -285,7 +285,11 @@
                 <td>Fedecomin</td><td>{{$fencomin}}</td><td>{{$valorneto*$fencomin}}</td>
             </tr>
             @endif
-            
+            @if($termino->caja > 0)
+            <tr>
+                <td>Caja</td><td>{{$termino->caja*100}} %</td><td>{{$caja=$valorbruto*$termino->caja}}</td>
+            </tr>
+            @endif
             @if($liquidacione->valoradicional > 0)
             <tr>
                 <td>{{$liquidacione->glosario}}</td><td></td><td>{{$liquidacione->valoradicional}}</td>
@@ -297,11 +301,14 @@
                 <td>{{$finrealizacion= $valorbruto * $termino->remesa + ($regaliaAg - $regAg) + ($regaliaZn - $regZn) }}</td>
             </tr>
             <tr>
-                <td>Descuentos</td><td colspan="2">{{$totaldescuentos=$finflete+$finrollback+$regAg+$regZn+$fincomibol+$finfedecomin+$finfencomin+$finrealizacion+$liquidacione->valoradicional}}</td>
+                <td>Descuentos</td><td colspan="2">{{$totaldescuentos=$caja+$finflete+$finrollback+$regAg+$regZn+$fincomibol+$finfedecomin+$finfencomin+$finrealizacion+$liquidacione->valoradicional}}</td>
             </tr>
             <tr></tr>
             <tr>
-                <td>Valor neto pagable: </td><td colspan="2">{{$valorbruto-$totaldescuentos}}</td>
+                <td>Valor neto pagable: </td><td colspan="2">{{$valortotal=$valorbruto-$totaldescuentos}}</td>
+            </tr>
+            <tr>
+                <td>{{$valortotal*$termino->pagable/100}}</td>
             </tr>
         </tbody>
     </table>

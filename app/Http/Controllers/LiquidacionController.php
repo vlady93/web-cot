@@ -47,8 +47,13 @@ class LiquidacionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-       
+    {   
+        if ($request->medidaznpb ==='1') {
+            $nacional=$request->smc_pb*2204.62;
+        }else{
+            $nacional=$request->smc_pb;
+        }
+
         $input = $request->all();
         $humedad=elementos::where("nombre","humedad")->select("id")->first();
         $as=elementos::where("nombre","Arsenico")->select("id")->first();
@@ -57,7 +62,7 @@ class LiquidacionController extends Controller
         $hume=$humedad['id'];
         $results[] = ['elemento_id' => $hume,'valor'=> $request->humedad];
         
-        $proyecto = liquidacion::create($input);
+        $proyecto = liquidacion::create(['smc_pb'=>$nacional]+$input);
         foreach ($request->elemento_id as $key => $valor) {
             $results[] = array("elemento_id" => $request->elemento_id[$key],
             "valor" => $request->valor[$key]);
@@ -70,6 +75,8 @@ class LiquidacionController extends Controller
         }
         $results[] = ['elemento_id' => $assb['id'],'valor'=> $suma];
         $proyecto->LeyesDetalle()->createMany($results);
+        LiquidacionDetalles::where('id',$request->liquidacion_detalles_id)->update(array('estado'=>'PROVISIONAL'));
+        
 
         return redirect()->route('liquidaciones.index');
     }
@@ -255,24 +262,17 @@ class LiquidacionController extends Controller
         $termino=Termino::join('liquidacion_detalles','liquidacion_detalles.termino_id','terminos.id')
         ->where('liquidacion_detalles.id',$liquidacion->liquidacion_detalles_id)->first();
         $liquidacione=liquidacion::where('liquidacion_detalles_id',$liquidacion->liquidacion_detalles_id)->first();
-        $valorag = leyes::join('elementos', "elementos.id", "=", "leyes.elemento_id")
-            ->where('liquidacion_id', $liquidacion->id)
-            ->where('elementos.nombre', 'Plata')
-            ->select('leyes.valor')
-            ->first();
-        $valorzn=leyes::join('elementos',"elementos.id","=","leyes.elemento_id")
-            ->where('liquidacion_id',$liquidacion->id)
-            ->where('elementos.nombre','Plomo')
-            ->select('leyes.valor as val')
-            ->first();
+        $valorag=$pdfBuilderService->valor($liquidacion,'Plata');  
+        $valorpb=$pdfBuilderService->valor($liquidacion,'Plomo');  
         $comibol=$pdfBuilderService->calcularEmpresa($termino->comibol);
         $fedecomin=$pdfBuilderService->calcularEmpresa($termino->fedecomin);
         $fencomin=$pdfBuilderService->calcularEmpresa($termino->fencomin);
         $pagable=$pdfBuilderService->calcularPlomo($liquidacion);
         $vfinalag=$pdfBuilderService->calcularAg($liquidacion);
-        $resultados=$pdfBuilderService->calculoPenalidadesZn($liquidacion);
+        $resultados=$pdfBuilderService->calculoPenalidades($liquidacion);
+        
       
-        $pdf = Pdf::loadView('liquidacion.pdfpb',compact('leyes','clientes','pagable','vfinalag','liquidacione','resultados','termino','valorag','valorzn','comibol','fedecomin','fencomin'));
+        $pdf = Pdf::loadView('liquidacion.pdfpb',compact('leyes','clientes','pagable','vfinalag','liquidacione','resultados','termino','valorag','valorpb','comibol','fedecomin','fencomin'));
 
         return $pdf->stream('Reporte_de_compraf');
     }

@@ -13,6 +13,8 @@ class Termino extends Model
         'tipo_id',
         'nombre',
         'merma',
+        'caja',
+        'pagable',
         'valorag',
         'minimoag',
         'porcentag',

@@ -34,27 +34,38 @@
                                 </div>
 
 
-                                <div class="col-xs-3 col-sm-3 col-md-3">
+                                <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
-                                        <strong>Cotización Nacional Zn/Pb:</strong>
+                                        <strong>Oficial Zn/Pb:</strong>
                                         <input type="number" name="cot_ag" step="0.01" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-xs-3 col-sm-3 col-md-34">
+                                <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
-                                        <strong>Cotización Nacional Ag:</strong>
+                                        <strong>Oficial Ag:</strong>
                                         <input type="number" name="cot_pb" step="0.01" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-xs-3 col-sm-3 col-md-3">
+                                <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
-                                        <strong>Cotización Oficial Zn/Pb:</strong>
+                                        <strong>Nacional Zn/Pb:</strong>
                                         <input type="number" name="smc_pb" step="0.01" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-xs-3 col-sm-3 col-md-3">
+                                <div class="form-group col-2 col-md-2 col-lg-2">
+                                            
+                                    <label><strong>Medida</strong></label>
+                                    <select class="custom-select" id="inputGroupSelect01" name="medidaznpb">
+                                       
+                                    <option value="" disabled selected>Seleccione</option>
+                                      <option value="1">Lb</option>
+                                      <option value="2">Ton</option>
+                                    </select>
+                                 
+                            </div>
+                                <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
-                                        <strong>Cotización Oficial Ag:</strong>
+                                        <strong>Nacional Ag:</strong>
                                         <input type="number" name="smc_ag" step="0.01" class="form-control">
                                     </div>
                                 </div>
@@ -83,7 +94,7 @@
                                 <div class="col-xs-4 col-sm-4 col-md-4" id="glosario">
                                     <div class="form-group">
                                         <strong>Glosario:</strong>
-                                        <input type="text" name="glosario "class="form-control">
+                                        <input type="text" name="glosario"class="form-control">
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4" id="valoradicional">

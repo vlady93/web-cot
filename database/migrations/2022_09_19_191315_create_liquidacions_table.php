@@ -18,12 +18,12 @@ class CreateLiquidacionsTable extends Migration
             $table->unsignedBigInteger('liquidacion_detalles_id');
             $table->foreign('liquidacion_detalles_id')->references('id')->on('liquidacion_detalles');
             $table->String('lote');                                        
-            $table->decimal('cot_ag');                                      
-            $table->decimal('cot_pb');
+            $table->decimal('cot_ag',8,4);                                      
+            $table->decimal('cot_pb',8,4);
             $table->decimal('tmh');                                      
             $table->decimal('humedad');
-            $table->decimal('smc_ag');
-            $table->decimal('smc_pb');
+            $table->decimal('smc_ag',8,4);
+            $table->decimal('smc_pb',8,4);
             $table->String('glosario')->nullable();
             $table->decimal('valoradicional')->nullable();                                          
             $table->timestamps();

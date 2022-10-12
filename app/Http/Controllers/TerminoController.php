@@ -24,6 +24,7 @@ class TerminoController extends Controller
     }
     public function store(Request $request)
     {
+
         $valorplata=0;
         $valorminimoplata=0;
         $date=Carbon::now('America/Lima');
