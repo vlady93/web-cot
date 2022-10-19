@@ -45,4 +45,32 @@ class TerminoController extends Controller
 
         return redirect()->route('terminos.index');
     }
+    public function edit(Termino $termino)
+    {
+        
+        $tipos=Tipo::get();
+        return view('termino.editar',compact('tipos','termino'));
+    }
+    public function update(Request $request, Termino $termino)
+    {
+        $valorplata=0;
+        $valorminimoplata=0;
+        if ($request->medida ==='1') {
+            $valorminimoplata=$request->minimoag/31.1035;# code...
+        }else{
+            $valorminimoplata=$request->minimoag;
+        }
+        if ($request->peso ==='1') {
+            $valorplata=$request->valorag/31.1035;# code...
+        }else{
+            $valorplata=$request->valorag;
+        }
+        
+        $valorremesa=$request->remesa/100;
+        $input = $request->all();
+        $input['nombre'] = $request->nombre;
+        $termino->update(['valorag'=>round($valorplata,7),'minimoag'=>$valorminimoplata,'remesa'=>$valorremesa]+$input);     
+
+        return redirect()->route('terminos.index');
+    }
 }

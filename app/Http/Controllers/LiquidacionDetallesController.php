@@ -54,7 +54,7 @@ class LiquidacionDetallesController extends Controller
         }
         $proyecto->Penalidades()->createMany($results);
 
-        return redirect()->route('liquidaciones.index');
+        return redirect()->route('liquidador.index');
     }
 
     /**

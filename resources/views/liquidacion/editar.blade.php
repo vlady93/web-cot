@@ -10,20 +10,19 @@
                         <div class="d-flex justify-content-between align-items-center mb-3 mr-2">
                             <h4>Registro de liquidación</h4>
                         </div>
-                        <form action="{{ route('liquidacions.store') }}" method="POST">
+                        <form action="{{ route('liquidacions.update', $liquidacion) }}" method="POST">
                             @csrf
+                            @method('PUT')
                             <div class="row">
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>Liquidaciones</strong>
-                                        <select class="form-control" name="liquidacion_detalles_id"
-                                            id="liquidacion_detalles_id">
-                                            <option value="" disabled selected>Seleccione Liquidación</option>
-                                            @foreach ($liquidaciones as $liquidacion)
-                                                <option data-target="{{ $liquidacion->id }}" value="{{ $liquidacion->id }}">
-                                                    Liquidación de {{ $liquidacion->cliente->nombre }}
-                                                    {{ $liquidacion->cliente->ap_paterno }}
-                                                    {{ $liquidacion->termino->tipo->nombre }} </option>
+                                        <select class="form-control" name="liquidacion_detalles_id" required>          
+                                            @foreach ($liquidaciones as $liquidacione)
+                                                <option value="{{ $liquidacione->id }}"
+                                                    @if ($liquidacione->id == $liquidacion->liquidaciones_detalle_id) selected @endif>
+                                                    {{ $liquidacione->cliente->nombre }}
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -32,62 +31,64 @@
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>Nombre Lote:</strong>
-                                        <input type="text" name="lote" class="form-control">
+                                        <input type="text" name="lote" class="form-control"
+                                            value="{{ $liquidacion->lote }}">
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <span>Fecha de Entrega</span>
                                     <div class="form-group">
-                                        <input class="form-control" type="date" name="fecha_entrega" id="fecha_ini">
+                                        <input class="form-control" type="date" name="fecha_entrega" value="{{$liquidacion->fecha_entrega}}">
                                     </div>
                                 </div>
 
                                 <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
                                         <strong>Oficial Zn/Pb:</strong>
-                                        <input type="number" name="cot_ag" step="0.01" class="form-control">
+                                        <input type="number" name="cot_ag" step="0.01" class="form-control" value="{{$liquidacion->cot_ag}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
                                         <strong>Oficial Ag:</strong>
-                                        <input type="number" name="cot_pb" step="0.01" class="form-control">
+                                        <input type="number" name="cot_pb" step="0.01" class="form-control" value="{{$liquidacion->cot_pb}}">
                                     </div>
                                 </div>
                                 <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
                                         <strong>Nacional Zn/Pb:</strong>
-                                        <input type="number" name="smc_pb" step="0.01" class="form-control">
+                                        <input type="number" name="smc_pb" step="0.01" class="form-control" value="{{$liquidacion->smc_pb}}">
                                     </div>
                                 </div>
                                 <div class="form-group col-2 col-md-2 col-lg-2">
 
-                                    <label><strong>Medida</strong></label>
+                                    <strong>Medida</strong>
                                     <select class="custom-select" id="inputGroupSelect01" name="medidaznpb">
 
                                         <option value="" disabled selected>Seleccione</option>
                                         <option value="1">Lb</option>
-                                        <option value="2">Ton</option>
+                                        <option value="2" selected>Ton</option>
                                     </select>
 
                                 </div>
                                 <div class="col-xs-2 col-sm-2 col-md-2">
                                     <div class="form-group">
                                         <strong>Nacional Ag:</strong>
-                                        <input type="number" name="smc_ag" step="0.01" class="form-control">
+                                        <input type="number" name="smc_ag" step="0.01" class="form-control" value="{{$liquidacion->smc_ag}}">
                                     </div>
                                 </div>
 
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>TMH:</strong>
-                                        <input type="number" name="tmh" step="0.01" class="form-control">
+                                        <input type="number" name="tmh" step="0.01" class="form-control"
+                                            value="{{ $liquidacion->tmh }}">
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>H<small>2</small>O:</strong>
-                                        <input type="number" name="humedad" step="0.01" class="form-control">
+                                        <input type="number" name="humedad" step="0.01" class="form-control" value="{{ $liquidacion->tmh }}">
                                     </div>
                                 </div>
                                 <div class="form-group col-3 col-md-3 col-lg-3">
@@ -103,23 +104,20 @@
                                 <div class="col-xs-4 col-sm-4 col-md-4" id="glosario">
                                     <div class="form-group">
                                         <strong>Glosario:</strong>
-                                        <input type="text" name="glosario"class="form-control">
+                                        <input type="text" name="glosario"class="form-control" value="{{ $liquidacion->glosario }}">
                                     </div>
                                 </div>
                                 <div class="col-xs-4 col-sm-4 col-md-4" id="valoradicional">
                                     <div class="form-group">
                                         <strong>Monto adicional:</strong>
-                                        <input type="number" name="valoradicional" step="0.01" class="form-control">
+                                        <input type="number" name="valoradicional" step="0.01" class="form-control" value="{{ $liquidacion->valoradicional }}">
                                     </div>
                                 </div>
-                                <div class="form-group col-8 col-md-8 col-lg-8">
-                                    <strong>Tipo</strong>
-                                    <select class="custom-select" id="inputGroupSelect01" name="observacion">
-                                        <option value="" disabled selected>Seleccione</option>
-                                        <option value="1">Concentrado</option>
-                                        <option value="2">Mixto</option>
-                                    </select>
-
+                                <div class="col-xs-12 col-sm-12 col-md-12">
+                                    <div class="form-group">
+                                        <strong>Observación:</strong>
+                                        <input type="text" name="observacion" class="form-control" value="{{ $liquidacion->observacion }}">
+                                    </div>
                                 </div>
                                 <div class="col-xs-6 col-sm-6 col-md-6">
                                     <div class="form-group">
@@ -160,10 +158,18 @@
                                                         <th>Valor</th>
                                                     </tr>
                                                 </thead>
-                                                <tfoot>
-
-                                                </tfoot>
+                                                
                                                 <tbody class="tbody" id="tbody">
+                                                    @foreach ($leyes as $ley )
+                                                    <tr class="ItemElemento">
+                                                        <td><button type="button" data-elemento="{{$ley->elemento_id}}"
+                                                            class="delete btn btn-danger btn-sm" id="delete" ><i class="fa fa-times fa-2x"></i></button></td>
+                                                        <td class="valor"><input type="hidden" id="elemento" name="elemento_id[]"  class="elemen" value="{{$ley->elemento_id}}">{{$ley->elemento->simbolo}}</td><td> <input type="number" name="valor[]" class="form-control"  value="{{$ley->valor}}"></td></td>
+                                                        
+                                                    </tr>
+                            
+                                                    @endforeach
+                                                    
                                                 </tbody>
                                             </table>
                                         </div>
@@ -192,6 +198,7 @@
                 agregar();
             });
         });
+        
         $("#guardar").hide();
         $("#elemento_id").change(mostrarValores);
 
@@ -199,7 +206,17 @@
             datosElementos = document.getElementById('elemento_id').value;
 
         }
-
+        $("tbody tr").each(function(el){
+            var tds = $(this).find("td");
+            var objeto=tds.find("#elemento").val();
+            
+            carrito.push(objeto);
+        });
+        $("tbody tr").each(function(el){
+            var tds = $(this).find("button").on("click",eliminar) ;    
+        });
+        
+        
         function agregar() {
             datosElementos = document.getElementById('elemento_id').value;
             console.log(datosElementos);
@@ -224,6 +241,7 @@
 
         function eliminar(e) {
             const btnd = e.target
+            console.log(btnd);
             const tr = btnd.closest('.ItemElemento')
             const obtner = tr.querySelector('.elemen').value;
             console.log(obtner)

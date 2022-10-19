@@ -19,7 +19,10 @@ class liquidacion extends Model
         'tmh',
         'humedad',
         'glosario',
-        'valoradicional'
+        'valoradicional',
+        'fecha_entrega',
+        'fecha',
+        'observacion'
     ];
     public function LeyesDetalle(){
         return $this->hasMany(leyes::class);

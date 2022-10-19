@@ -32,7 +32,7 @@ Route::middleware([
 ])->group(function () {
     Route::resource('clientes', ClienteController::class);
     Route::resource('terminos', TerminoController::class);
-    Route::resource('liquidador', LiquidacionController::class);
+    Route::resource('liquidacions', LiquidacionController::class);
     Route::resource('elementos', ElementosController::class);
     Route::resource('penalidades', PenalidadController::class);
     Route::resource('liquidaciondetalles', LiquidacionDetallesController::class);

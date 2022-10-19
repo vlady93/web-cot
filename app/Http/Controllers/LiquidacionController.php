@@ -12,6 +12,7 @@ use App\Models\Termino;
 use App\Services\PdfBuilderService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class LiquidacionController extends Controller
@@ -23,8 +24,8 @@ class LiquidacionController extends Controller
      */
     public function index()
     {
-        $liquidaciones=LiquidacionDetalles::join('liquidacions','liquidacions.liquidacion_detalles_id','liquidacion_detalles.id')->get();
-        return view('liquidacion.index',compact('liquidaciones'));
+        $liquidacions=LiquidacionDetalles::join('liquidacions','liquidacions.liquidacion_detalles_id','liquidacion_detalles.id')->get();
+        return view('liquidacion.index',compact('liquidacions'));
     }
 
     /**
@@ -48,6 +49,7 @@ class LiquidacionController extends Controller
      */
     public function store(Request $request)
     {   
+        
         if ($request->medidaznpb ==='1') {
             $nacional=$request->smc_pb*2204.62;
         }else{
@@ -55,6 +57,7 @@ class LiquidacionController extends Controller
         }
 
         $input = $request->all();
+        $input['fecha']= Carbon::now('America/Lima');
         $humedad=elementos::where("nombre","humedad")->select("id")->first();
         $as=elementos::where("nombre","Arsenico")->select("id")->first();
         $sb=elementos::where("nombre","Antimonio")->select("id")->first();
@@ -78,7 +81,7 @@ class LiquidacionController extends Controller
         LiquidacionDetalles::where('id',$request->liquidacion_detalles_id)->update(array('estado'=>'PROVISIONAL'));
         
 
-        return redirect()->route('liquidaciones.index');
+        return redirect()->route('liquidador.index');
     }
 
     /**
@@ -105,22 +108,21 @@ class LiquidacionController extends Controller
      * @param  \App\Models\liquidacion  $liquidacion
      * @return \Illuminate\Http\Response
      */
-    public function edit(liquidacion $liquidacion)
+    public function edit( liquidacion $liquidacion)
     {
         
+        $liquidaciones=LiquidacionDetalles::get();
+        $elementos=elementos::get();
+        $leyes=leyes::where('leyes.liquidacion_id',$liquidacion->id)->get();
+        return view('liquidacion.editar', compact('liquidaciones','elementos','liquidacion','leyes'));
        
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\liquidacion  $liquidacion
-     * @return \Illuminate\Http\Response
-     */
+   
+    
     public function update(Request $request, liquidacion $liquidacion)
     {
-        //
+        $liquidacion->upadte($request->all());
     }
 
     /**

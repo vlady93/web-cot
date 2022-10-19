@@ -26,18 +26,15 @@
                                             aria-describedby="table-1_info">
                                             <thead>
                                                 <tr>
-                                                    <th class="sorting_asc">Cliente</th>
-                                                    <th class="sorting_asc">Material</th>
-                                                    <th class="sorting_asc"></th>
-                                                    <th class="sorting_asc"></th>
-                                                
+                                                    <th class="sorting_asc">Termino</th>
+                                                    <th class="sorting_asc">Acciones</th>   
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($terminos as $termino)
                                                 <tr>
-                                                    <td></td>
-                                                    <td></td>
+                                                    <td>{{$termino->nombre}}</td>
+                                                    <td><a class="nav-link" href={{route('terminos.edit',$termino)}}><i data-feather="edit"></i></a></td>
                                                     
                                                 </tr>
                                                 @endforeach

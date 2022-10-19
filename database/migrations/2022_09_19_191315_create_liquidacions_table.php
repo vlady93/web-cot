@@ -24,6 +24,9 @@ class CreateLiquidacionsTable extends Migration
             $table->decimal('humedad');
             $table->decimal('smc_ag',8,4);
             $table->decimal('smc_pb',8,4);
+            $table->dateTime('fecha');
+            $table->dateTime('fecha_entrega');
+            $table->String('observacion')->nullable();
             $table->String('glosario')->nullable();
             $table->decimal('valoradicional')->nullable();                                          
             $table->timestamps();
