@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cliente;
 use App\Models\elementos;
+use App\Models\Files;
 use App\Models\leyes;
 use App\Models\liquidacion;
 use App\Models\LiquidacionDetalles;
@@ -17,14 +18,16 @@ use Illuminate\Support\Facades\DB;
 
 class LiquidacionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    function __construct()
+    {
+         $this->middleware('permission:ver-liquidacion')->only('index');
+         $this->middleware('permission:crear-liquidacion', ['only' => ['create','store']]);
+         $this->middleware('permission:editar-liquidacion', ['only' => ['edit','update']]);
+    }
     public function index()
     {
         $liquidacions=LiquidacionDetalles::join('liquidacions','liquidacions.liquidacion_detalles_id','liquidacion_detalles.id')->get();
+       
         return view('liquidacion.index',compact('liquidacions'));
     }
 
@@ -90,16 +93,12 @@ class LiquidacionController extends Controller
      * @param  \App\Models\liquidacion  $liquidacion
      * @return \Illuminate\Http\Response
      */
-    public function show( $liquidacion)
+    public function show( liquidacion $liquidacion)
     {
-        $liquidaciones = liquidacion::join("leyes","leyes.liquidacion_id","=","liquidacions.id")
-        ->join("elementos","elementos.id","=","leyes.elemento_id")
-        ->select("elementos.simbolo","leyes.valor","liquidacions.id as id_li","elementos.id")
-        ->where("liquidacions.id","=" ,$liquidacion)
-        ->get();
-        $id_liqui=$liquidacion;
-  
-        return view('liquidacion.show', compact('liquidaciones','id_liqui'));
+
+        $liquidacions=LiquidacionDetalles::join('liquidacions','liquidacions.liquidacion_detalles_id','liquidacion_detalles.id')->get();
+       $files=Files::where('liquidacion_id',$liquidacion->id)->get();
+        return view('liquidacion.show', compact('liquidacion','files'));
     }
 
     /**
@@ -122,7 +121,41 @@ class LiquidacionController extends Controller
     
     public function update(Request $request, liquidacion $liquidacion)
     {
-        $liquidacion->upadte($request->all());
+        
+        $borrar=leyes::where('leyes.liquidacion_id',$liquidacion->id);
+        $liquidacion->LeyesDetalle()->delete($borrar); 
+        if ($request->medidaznpb ==='1') {
+            $nacional=$request->smc_pb*2204.62;
+        }else{
+            $nacional=$request->smc_pb;
+        }
+        
+        $input = $request->all();
+        $humedad=elementos::where("nombre","humedad")->select("id")->first();
+        $as=elementos::where("nombre","Arsenico")->select("id")->first();
+        $sb=elementos::where("nombre","Antimonio")->select("id")->first();
+        $assb=elementos::where("simbolo","As+Sb")->select("id")->first();
+        $hume=$humedad['id'];
+
+        $results[] = ['elemento_id' => $hume,'valor'=> $request->humedad];
+       
+       
+        foreach ($request->elemento_id as $key => $valor) {
+            $results[] = array("elemento_id" => $request->elemento_id[$key],
+            "valor" => $request->valor[$key]);
+        }
+        
+        $suma=0;
+        foreach($results as $res){
+            if($res['elemento_id'] === strval($as['id'])|| $res['elemento_id'] === strval($sb['id']) ){
+                $suma=$suma+$res['valor'];
+            }
+        }
+        
+        $results[] = ['elemento_id' => $assb['id'],'valor'=> $suma];
+        $liquidacion->update(['smc_pb'=>$nacional]+$input);
+        $liquidacion->LeyesDetalle()->createMany($results); 
+
     }
 
     /**

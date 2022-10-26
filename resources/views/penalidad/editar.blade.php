@@ -8,117 +8,26 @@
                 <div class="card card-secondary">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3 mr-2">
-                            <h4>Registro de liquidación</h4>
+                            <h4>Modificar Penalidades</h4>
                         </div>
-                        <form action="{{ route('liquidacions.update', $liquidacion) }}" method="POST">
+                        <form action="{{ route('penalidades.update', $penalidad) }}" method="POST">
                             @csrf
                             @method('PUT')
                             <div class="row">
                                 <div class="col-xs-4 col-sm-4 col-md-4">
                                     <div class="form-group">
                                         <strong>Liquidaciones</strong>
-                                        <select class="form-control" name="liquidacion_detalles_id" required>          
-                                            @foreach ($liquidaciones as $liquidacione)
+                                        {{-- <select class="form-control" name="liquidacion_detalles_id" required>          
+                                            @foreach ($penalidads as $penalidad)
                                                 <option value="{{ $liquidacione->id }}"
                                                     @if ($liquidacione->id == $liquidacion->liquidaciones_detalle_id) selected @endif>
                                                     {{ $liquidacione->cliente->nombre }}
                                                 </option>
                                             @endforeach
-                                        </select>
+                                        </select> --}}
                                     </div>
                                 </div>
 
-                                <div class="col-xs-4 col-sm-4 col-md-4">
-                                    <div class="form-group">
-                                        <strong>Nombre Lote:</strong>
-                                        <input type="text" name="lote" class="form-control"
-                                            value="{{ $liquidacion->lote }}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4">
-                                    <span>Fecha de Entrega</span>
-                                    <div class="form-group">
-                                        <input class="form-control" type="date" name="fecha_entrega" value="{{$liquidacion->fecha_entrega}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-2 col-sm-2 col-md-2">
-                                    <div class="form-group">
-                                        <strong>Oficial Zn/Pb:</strong>
-                                        <input type="number" name="cot_ag" step="0.01" class="form-control" value="{{$liquidacion->cot_ag}}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2">
-                                    <div class="form-group">
-                                        <strong>Oficial Ag:</strong>
-                                        <input type="number" name="cot_pb" step="0.01" class="form-control" value="{{$liquidacion->cot_pb}}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2">
-                                    <div class="form-group">
-                                        <strong>Nacional Zn/Pb:</strong>
-                                        <input type="number" name="smc_pb" step="0.01" class="form-control" value="{{$liquidacion->smc_pb}}">
-                                    </div>
-                                </div>
-                                <div class="form-group col-2 col-md-2 col-lg-2">
-
-                                    <strong>Medida</strong>
-                                    <select class="custom-select" id="inputGroupSelect01" name="medidaznpb">
-
-                                        <option value="" disabled selected>Seleccione</option>
-                                        <option value="1">Lb</option>
-                                        <option value="2" selected>Ton</option>
-                                    </select>
-
-                                </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2">
-                                    <div class="form-group">
-                                        <strong>Nacional Ag:</strong>
-                                        <input type="number" name="smc_ag" step="0.01" class="form-control" value="{{$liquidacion->smc_ag}}">
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-4 col-sm-4 col-md-4">
-                                    <div class="form-group">
-                                        <strong>TMH:</strong>
-                                        <input type="number" name="tmh" step="0.01" class="form-control"
-                                            value="{{ $liquidacion->tmh }}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4">
-                                    <div class="form-group">
-                                        <strong>H<small>2</small>O:</strong>
-                                        <input type="number" name="humedad" step="0.01" class="form-control" value="{{ $liquidacion->humedad }}">
-                                    </div>
-                                </div>
-                                <div class="form-group col-3 col-md-3 col-lg-3">
-                                    <br>
-                                    <div class="form-check">
-                                        <input class="form-check-input miOpcion" type="checkbox" id="defaultCheck3"
-                                            onclick="formAdicional()">
-                                        <label class="form-check-label" for="defaultCheck3">
-                                            <strong>Añadir otros Gastos:</strong>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4" id="glosario">
-                                    <div class="form-group">
-                                        <strong>Glosario:</strong>
-                                        <input type="text" name="glosario"class="form-control" value="{{ $liquidacion->glosario }}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4" id="valoradicional">
-                                    <div class="form-group">
-                                        <strong>Monto adicional:</strong>
-                                        <input type="number" name="valoradicional" step="0.01" class="form-control" value="{{ $liquidacion->valoradicional }}">
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-12 col-md-12">
-                                    <div class="form-group">
-                                        <strong>Observación:</strong>
-                                        <input type="text" name="observacion" class="form-control" value="{{ $liquidacion->observacion }}">
-                                    </div>
-                                </div>
                                 <div class="col-xs-6 col-sm-6 col-md-6">
                                     <div class="form-group">
                                         <strong>Elementos</strong>

@@ -7,11 +7,13 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    function __construct()
+    {
+         $this->middleware('permission:ver-cliente')->only('index');
+         $this->middleware('permission:crear-cliente', ['only' => ['create','store']]);
+         $this->middleware('permission:editar-cliente', ['only' => ['edit','update']]);
+         $this->middleware('permission:detalle-cliente', ['only' => ['show']]);
+    }
     public function index()
     {
          $datas = Cliente::select('nombre','ap_paterno','ap_materno','ci')->get();;

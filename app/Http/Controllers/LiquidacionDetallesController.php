@@ -5,20 +5,23 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\elementos;
 use App\Models\LiquidacionDetalles;
+use App\Models\Penalidad;
 use App\Models\Termino;
 use Illuminate\Http\Request;
 
 class LiquidacionDetallesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    function __construct()
+    {
+         $this->middleware('permission:ver-penalidad')->only('index');
+         $this->middleware('permission:crear-penalidad', ['only' => ['create','store']]);
+         $this->middleware('permission:editar-penalidad', ['only' => ['edit','update']]);
+         $this->middleware('permission:detalle-penalidad', ['only' => ['show']]);
+    }
     public function index()
     {
-        
-        return view('liquidacion_detalles.index');
+        $liquidacionDetalles=LiquidacionDetalles::get();
+        return view('liquidacion_detalles.index',compact('liquidacionDetalles'));
     }
 
     /**
@@ -54,7 +57,7 @@ class LiquidacionDetallesController extends Controller
         }
         $proyecto->Penalidades()->createMany($results);
 
-        return redirect()->route('liquidador.index');
+        return redirect()->route('liquidacions.index');
     }
 
     /**
@@ -74,9 +77,13 @@ class LiquidacionDetallesController extends Controller
      * @param  \App\Models\LiquidacionDetalles  $liquidacionDetalles
      * @return \Illuminate\Http\Response
      */
-    public function edit(LiquidacionDetalles $liquidacionDetalles)
+    public function edit(LiquidacionDetalles $liquidacion_detalle)
     {
-        //
+        $terminos=Termino::get();
+        $clientes=Cliente::get();
+        $elementos=elementos::get();
+        $penalidads=Penalidad::where('penalidads.liquidacion_detalles_id',$liquidacion_detalle->id)->get();
+        return view('liquidacion_detalles.editar',compact('terminos','clientes','elementos','liquidacion_detalle','penalidads'));
     }
 
     /**
@@ -86,9 +93,21 @@ class LiquidacionDetallesController extends Controller
      * @param  \App\Models\LiquidacionDetalles  $liquidacionDetalles
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, LiquidacionDetalles $liquidacionDetalles)
+    public function update(Request $request, LiquidacionDetalles $liquidacion_detalle)
     {
-        //
+        $input = $request->all();
+        $borrar=Penalidad::where('penalidads.liquidacion_detalles_id',$liquidacion_detalle->id);
+        $liquidacion_detalle->Penalidades()->delete($borrar); 
+        foreach ($request->elemento_id as $key => $valor) {
+            $results[] = array(
+            "libre" => $request->libre[$key],
+            "costo" => $request->costo[$key],
+            "fraccion" => $request->fraccion[$key],
+            "elemento_id" => $request->elemento_id[$key]);
+        }
+        $liquidacion_detalle->Penalidades()->createMany($results);
+        $liquidacion_detalle->update($input);
+        return redirect()->route('liquidacion_detalles.index');
     }
 
     /**

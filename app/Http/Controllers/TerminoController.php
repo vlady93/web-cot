@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Termino\StoreRequest;
+use App\Http\Requests\Termino\UpdateRequest;
 use App\Models\Cliente;
 use App\Models\Termino;
 use App\Models\Tipo;
@@ -10,6 +12,13 @@ use Illuminate\Http\Request;
 
 class TerminoController extends Controller
 {
+    function __construct()
+    {
+         $this->middleware('permission:ver-termino')->only('index');
+         $this->middleware('permission:crear-termino', ['only' => ['create','store']]);
+         $this->middleware('permission:editar-termino', ['only' => ['edit','update']]);
+         $this->middleware('permission:detalle-termino', ['only' => ['show']]);
+    }
     public function index(){
         
         $terminos=Termino::get();
@@ -51,7 +60,12 @@ class TerminoController extends Controller
         $tipos=Tipo::get();
         return view('termino.editar',compact('tipos','termino'));
     }
-    public function update(Request $request, Termino $termino)
+    public function duplicar(Termino $termino)
+    {
+        $tipos=Tipo::get();
+        return view('termino.duplicar',compact('tipos','termino'));
+    }
+    public function update(UpdateRequest $request, Termino $termino)
     {
         $valorplata=0;
         $valorminimoplata=0;

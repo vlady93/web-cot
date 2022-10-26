@@ -28,7 +28,7 @@
                                                     <th class="sorting_asc">Nombre</th>
                                                     <th class="sorting_asc">Apellido Paterno</th>
                                                     <th class="sorting_asc">Apellido Materno</th>
-                                                    <th class="sorting_asc">Cedula de Identidad</ths>
+                                                    <th class="sorting_asc">Cedula de Identidad</th>
                                                 </tr>
                                             </thead>
                                             <tbody>

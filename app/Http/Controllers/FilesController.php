@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\liquidacion;
-use App\Models\LiquidacionDetalles;
-use App\Models\Penalidad;
+use App\Models\Files;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
-class PenalidadController extends Controller
+class FilesController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +15,7 @@ class PenalidadController extends Controller
      */
     public function index()
     {
-        $penalidads=LiquidacionDetalles::get();
-        return view('penalidad.index',compact('penalidads'));
+        //
     }
 
     /**
@@ -27,6 +25,7 @@ class PenalidadController extends Controller
      */
     public function create()
     {
+        //
     }
 
     /**
@@ -38,39 +37,35 @@ class PenalidadController extends Controller
     public function store(Request $request)
     {
         
-    $results=[];
-    foreach ($request->liquidacion_id as $key => $id_liqui) {
-            $results[] = array( 
-            "libre" => $request->libre[$key],
-            "costo" => $request->costo[$key],
-            "fraccion" => $request->fraccion[$key],
-            "liquidacion_id" => $request->id_li[$key],
-            "elemento_id" => $request->liquidacion_id[$key],);
-        }
-       
-        Penalidad::insert($results);  
+        $imagenes = $request->url->store('public/imagenes');
+        $idb=$request->liquidacion_id;
+        $url = Storage::url($imagenes);
+        Files::create([
+            'url'=> $url,
+            'liquidacion_id'=>$idb,
+        ]);
 
-        return redirect()->route('liquidaciones.index');
+        return redirect()->route('liquidacions.index');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Penalidad  $penalidad
+     * @param  \App\Models\Files  $files
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Files $files)
     {
-        
+        //
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Penalidad  $penalidad
+     * @param  \App\Models\Files  $files
      * @return \Illuminate\Http\Response
      */
-    public function edit(Penalidad $penalidad)
+    public function edit(Files $files)
     {
         //
     }
@@ -79,10 +74,10 @@ class PenalidadController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Penalidad  $penalidad
+     * @param  \App\Models\Files  $files
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Penalidad $penalidad)
+    public function update(Request $request, Files $files)
     {
         //
     }
@@ -90,10 +85,10 @@ class PenalidadController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Penalidad  $penalidad
+     * @param  \App\Models\Files  $files
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Penalidad $penalidad)
+    public function destroy(Files $files)
     {
         //
     }

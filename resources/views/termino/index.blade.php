@@ -27,7 +27,8 @@
                                             <thead>
                                                 <tr>
                                                     <th class="sorting_asc">Termino</th>
-                                                    <th class="sorting_asc">Acciones</th>   
+                                                    <th class="sorting_asc">Editar</th>
+                                                    <th class="sorting_asc">Duplicar</th>    
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -35,6 +36,7 @@
                                                 <tr>
                                                     <td>{{$termino->nombre}}</td>
                                                     <td><a class="nav-link" href={{route('terminos.edit',$termino)}}><i data-feather="edit"></i></a></td>
+                                                    <td><a class="nav-link" href={{route('termino.duplicar',$termino)}}><i data-feather="copy"></i></a></td>
                                                     
                                                 </tr>
                                                 @endforeach

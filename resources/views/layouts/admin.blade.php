@@ -45,8 +45,8 @@
             </li> -->
           </ul>
         </div>
-        <!-- <ul class="navbar-nav navbar-right">
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
+         <ul class="navbar-nav navbar-right">
+          <!--<li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown"
               class="nav-link nav-link-lg message-toggle"><i data-feather="mail"></i>
               <span class="badge headerBadge1">
                 6 </span> </a>
@@ -155,26 +155,41 @@
                 <a href="#">View All <i class="fas fa-chevron-right"></i></a>
               </div>
             </div>
-          </li>
-          <li class="dropdown"><a href="#" data-toggle="dropdown"
-              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> <img alt="image" src="assets/img/user.png"
-                class="user-img-radious-style"> <span class="d-sm-none d-lg-inline-block"></span></a>
-            <div class="dropdown-menu dropdown-menu-right pullDown">
-              <div class="dropdown-title">Hello Sarah Smith</div>
-              <a href="profile.html" class="dropdown-item has-icon"> <i class="far
-										fa-user"></i> Profile
-              </a> <a href="timeline.html" class="dropdown-item has-icon"> <i class="fas fa-bolt"></i>
-                Activities
-              </a> <a href="#" class="dropdown-item has-icon"> <i class="fas fa-cog"></i>
-                Settings
-              </a>
-              <div class="dropdown-divider"></div>
-              <a href="auth-login.html" class="dropdown-item has-icon text-danger"> <i class="fas fa-sign-out-alt"></i>
-                Logout
-              </a>
-            </div>
-          </li>
-        </ul> -->
+          </li> -->
+          @if (Route::has('login'))
+                @auth
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle page-scroll text-warning" href="#" data-toggle="dropdown" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        
+                        {{ Auth::user()->name }}
+                    </a>
+                    <div class="dropdown-menu navbar-dropdown" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}" data-toggle="tooltip" data-placement="top" title="" data-original-title="Logout"
+                        onclick="event.preventDefault();
+                             document.getElementById('logout-form').submit();">
+                            <span class="item-text text-danger">Salir</span> 
+                        </a> 
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+                @else
+                    
+                    <li class="nav-item mr-2">
+                        <a class="nav-link page-scroll border border-success rounded-pill" href="{{ route('login') }}">LOGIN </a>
+                    </li>
+
+                @if (Route::has('register'))
+                        
+                        <li class="nav-item">
+                            <a class="nav-link page-scroll d-md-block border border-success rounded-pill" href="{{ route('register') }}">REGISTRAR</a>
+                        </li>
+                @endif
+                @endauth
+           
+                @endif
+        </ul> 
       </nav>
       @include('layouts._nav')
       <!-- Main Content -->

@@ -116,8 +116,8 @@
                                     <strong>Tipo</strong>
                                     <select class="custom-select" id="inputGroupSelect01" name="observacion">
                                         <option value="" disabled selected>Seleccione</option>
-                                        <option value="1">Concentrado</option>
-                                        <option value="2">Mixto</option>
+                                        <option value="Concentrado">Concentrado</option>
+                                        <option value="Mixto">Mixto</option>
                                     </select>
 
                                 </div>

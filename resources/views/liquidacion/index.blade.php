@@ -25,9 +25,14 @@
                                                 <tr>
                                                     <th class="sorting_asc">Cliente</th>
                                                     <th class="sorting_asc">N° Lote</th>
-                                                    <th class="sorting_asc">Observación</th>
+                                                    <th class="sorting_asc">Material</th>
                                                     <th class="sorting_asc">Fecha</th>
-                                                    <th class="sorting_asc">Acciones</th>
+                                                    <th class="sorting_asc">TMH</th>
+                                                    <th class="sorting_asc">Tipo</th>
+                                                    <th class="sorting_asc">Estado</th>
+                                                    <th class="sorting_asc">Editar</th>
+                                                    <th class="sorting_asc">Pdf</th>
+                                                    <th class="sorting_asc">Documentos</th>
                                                 
                                                 </tr>
                                             </thead>
@@ -36,15 +41,23 @@
                                                 <tr>
                                                     <td>{{ $liquidacion->cliente->nombre }} {{ $liquidacion->cliente->ap_paterno }}</td>
                                                     <td>{{ $liquidacion->lote}}</td>
-                                                    <td>{{ $liquidacion->observacion}}</td>
-                                                    <td>{{$liquidacion->fecha}}</td>
-                                                    <td>{{$liquidacion->id}}</td>
+                                                    <td>{{ $liquidacion->termino->tipo->nombre}}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($liquidacion->fecha)->format('d/m/y') }}</td>
+                                                    <td>{{$liquidacion->tmh}}</td>
+                                                    <td>{{$liquidacion->observacion}}</td>
+                                                    @if ($liquidacion->estado == 'PROVISIONAL')
+                                                    <td><a class="btn btn-warning btn-sm ">{{$liquidacion->estado}}</a></td>
+                                                    @else
+                                                    <td><a class="btn btn-success btn-sm ">{{$liquidacion->estado}}</a></td>
+                                                    @endif
+                                                    
                                                     <td><a class="nav-link" href={{route('liquidacions.edit', $liquidacion )}}><i data-feather="edit"></i></a></td>
                                                    @if ($liquidacion->termino->tipo_id!='1')
                                                    <td><a class="badge badge-danger" href={{route('liquidacion.pruebapdf',$liquidacion)}}>pdf</a></td>
                                                    @else
                                                    <td><a class="badge badge-info" href={{route('liquidacion.pruebapdf1',$liquidacion)}}>pdf</a></td>
                                                    @endif
+                                                   <td><a class="nav-link" href={{route('liquidacions.show', $liquidacion )}}><i data-feather="camera"></i></a></td>
                                                   
                                                     
                                                 </tr>
